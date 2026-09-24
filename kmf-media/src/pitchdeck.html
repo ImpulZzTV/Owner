@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>KMF MEDIA – Pitchdeck &amp; Preise</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  /* Cover */
+  .cover .photo { position: absolute; top: 0; right: 0; bottom: 0; width: 52%; }
+  .cover .photo img { object-position: 40% 30%; }
+  .cover .photo .fade { position: absolute; inset: 0; background:
+      linear-gradient(90deg, var(--night) 0%, rgba(8,9,10,0.55) 22%, rgba(8,9,10,0) 55%),
+      linear-gradient(0deg, rgba(8,9,10,0.7), rgba(8,9,10,0) 40%); }
+  .cover .copy { position: absolute; left: var(--m); top: 150px; width: 700px; }
+  .cover .claim { margin-top: 26px; }
+  .cover .sub { margin-top: 30px; display: flex; gap: 28px; align-items: flex-start; }
+  .cover .sub .d-s { width: 230px; }
+  .cover .sub .lead { width: 300px; font-size: 13px; padding-top: 2px; }
+  .cover .cta { position: absolute; left: var(--m); bottom: 70px; display: flex; gap: 12px; }
+  .cover .meta { position: absolute; right: var(--m); bottom: 30px; }
+
+  /* Split-Layout */
+  .split { position: absolute; top: 92px; bottom: 76px; left: var(--m); right: var(--m); display: grid; grid-template-columns: 5fr 7fr; gap: 56px; }
+  .split .photo { height: 100%; }
+  .stack > * + * { margin-top: 18px; }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
+  .pillars .card { padding: 20px 18px; }
+  .pillars .d-xs { margin: 16px 0 8px; }
+
+  /* Headline-Zeile oben */
+  .headrow { position: absolute; top: 92px; left: var(--m); right: var(--m); display: grid; grid-template-columns: 1fr 330px; gap: 48px; align-items: end; }
+  .headrow h2 { font-size: 44px; letter-spacing: -0.03em; line-height: 0.92; margin-top: 18px !important; white-space: nowrap; }
+  .headrow .lead { font-size: 13.5px; }
+  .content { position: absolute; top: 236px; left: var(--m); right: var(--m); bottom: 76px; }
+
+  /* Herausforderung */
+  .challenge { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; height: 100%; }
+  .challenge .card { display: flex; flex-direction: column; justify-content: space-between; padding: 26px 22px; }
+  .challenge .big { font-family: var(--display); font-weight: 500; font-size: 110px; letter-spacing: -0.04em; line-height: 0.8; color: rgba(255,255,255,0.1); }
+  .challenge .d-s { margin-bottom: 12px; }
+
+  /* Lösung */
+  .process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--hair); }
+  .process .step { padding: 20px 20px 0 0; position: relative; }
+  .process .step::before { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--night); border: 1px solid var(--ice); }
+  .process .step:first-child::before { background: var(--ice); }
+  .process .d-xs { margin: 12px 0 8px; }
+  .strip { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 14px; height: 250px; margin-top: 34px; }
+
+  /* Portfolio */
+  .folio { position: absolute; top: 178px; left: var(--m); right: var(--m); bottom: 76px; display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; }
+  .folio .photo { border-radius: 14px; }
+  .folio .a { grid-row: 1 / 3; }
+  .folio .label .d-xs { font-size: 13px; }
+
+  /* Leistungen */
+  .services { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 14px; height: 100%; }
+  .services .card { display: flex; flex-direction: column; }
+  .services .d-s { margin-bottom: 10px; }
+  .services .body { margin-top: auto; }
+
+  /* Preise */
+  .prices { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 14px; height: calc(100% - 34px); }
+  .prices .card { display: flex; flex-direction: column; padding: 20px 22px; }
+  .price { display: flex; align-items: baseline; gap: 8px; margin: auto 0 10px; }
+  .price .ab { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--steel); }
+  .price .val { font-family: var(--display); font-weight: 500; font-size: 44px; letter-spacing: -0.035em; line-height: 1; }
+  .price .cur { font-family: var(--display); font-size: 22px; color: var(--fog); }
+  .incl { font-size: 10.5px; color: var(--fog); padding-top: 10px; border-top: 1px solid var(--hair); }
+  .note { margin-top: 14px; }
+
+  /* Pakete */
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; height: 100%; }
+  .tiers .card { display: flex; flex-direction: column; padding: 26px 26px 24px; }
+  .tiers .card.pro { border-color: rgba(154,215,247,0.35); box-shadow: var(--raised), 0 0 40px rgba(154,215,247,0.06); }
+  .tiers .price { margin: 22px 0 4px; }
+  .tiers .per { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--steel); }
+  .tiers ul { list-style: none; margin-top: 22px; border-top: 1px solid var(--hair); }
+  .tiers li { font-size: 12px; color: var(--fog); padding: 9px 0; border-bottom: 1px solid var(--hair); display: flex; gap: 10px; align-items: center; }
+  .tiers li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--ice); flex: none; }
+  .tiers li b { color: var(--white); font-weight: 500; }
+
+  /* Zusatzleistungen */
+  .addons { border-top: 1px solid var(--hair); }
+  .addons .row { display: grid; grid-template-columns: 60px 1fr auto; align-items: center; padding: 17px 0; border-bottom: 1px solid var(--hair); }
+  .addons .row .d-xs { font-size: 16px; }
+  .addons .row .v { font-family: var(--display); font-size: 20px; font-weight: 500; letter-spacing: -0.02em; text-align: right; }
+  .addons .row .v small { font-family: var(--sans); font-size: 10px; letter-spacing: 0.22em; color: var(--steel); text-transform: uppercase; margin-right: 8px; }
+
+  /* Abschluss */
+  .closing .photo { position: absolute; top: 0; right: 0; bottom: 0; width: 44%; }
+  .closing .photo img { object-position: 30% 20%; }
+  .closing .photo .fade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--night) 0%, rgba(8,9,10,0.2) 30%, rgba(8,9,10,0) 60%), linear-gradient(0deg, rgba(8,9,10,0.6), rgba(8,9,10,0) 35%); }
+  .closing .copy { position: absolute; left: var(--m); top: 130px; width: 640px; }
+  .contact { margin-top: 40px; display: grid; grid-template-columns: 110px 1fr; row-gap: 0; width: 460px; border-top: 1px solid var(--hair); }
+  .contact > * { padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  .contact .k { font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--steel); }
+  .contact .v { font-size: 14px; color: var(--white); }
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- SVG-Pfeil wie auf kmf-media.de -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></symbol>
+</svg>
+
+<!-- 01 COVER -->
+<section class="page cover">
+  <div class="photo bleed"><img src="img/cover-kamera.jpg" alt=""><div class="fade"></div></div>
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span style="color:rgba(255,255,255,0.75)">Pitchdeck &amp; Preise 2026</span></div>
+  <div class="copy">
+    <span class="eyebrow">KMF MEDIA <span class="rule"></span> Video · Foto · Content</span>
+    <h1 class="display d-xxl claim">Filme,<br>die bleiben.</h1>
+    <div class="sub">
+      <p class="display d-s">Deine Marke.<br>Deine Story.<br>Dein Content.</p>
+      <p class="lead">Professionelle Content-Produktion für Unternehmen, Marken und Events. Deutschlandweit.</p>
+    </div>
+  </div>
+  <div class="cta">
+    <a class="pill primary" href="https://kmf-media.de/kontakt">Projekt starten <svg><use href="#arrow"/></svg></a>
+    <a class="pill ghost" href="https://kmf-media.de/portfolio">Portfolio ansehen</a>
+  </div>
+  <div class="meta small">kmf-media.de</div>
+</section>
+
+<!-- 02 ÜBER -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Über KMF MEDIA</span><span class="pno"><b>02</b> / 10</span></div>
+  <div class="split">
+    <div class="photo"><img src="img/studio-set.jpg" alt="" style="object-position:50% 35%"></div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <span class="eyebrow">Hinter der Kamera</span>
+      <h2 class="display d-l" style="margin-top:22px">Mehr als nur<br><span class="ice">eine Kamera.</span></h2>
+      <p class="lead" style="margin-top:24px;max-width:520px">KMF MEDIA steht für hochwertige, authentische und moderne Video- und Fotoproduktion – mit klarem Fokus auf Social Media, Markenauftritt und emotionale Bildsprache.</p>
+      <p class="body" style="margin-top:12px;max-width:520px">Hinter KMF MEDIA steht eine Person: Martin Kendrovszki. Du sprichst mit dem, der filmt, schneidet und am Ende abliefert.</p>
+      <div class="pillars">
+        <div class="card"><span class="num">01</span><h3 class="display d-xs">Cinematic Look</h3><p class="small">Professionelle Aufnahmen und eine eigene Bildsprache.</p></div>
+        <div class="card"><span class="num">02</span><h3 class="display d-xs">Social Media</h3><p class="small">Content, gedacht für Reels, TikTok, YouTube und Web.</p></div>
+        <div class="card"><span class="num">03</span><h3 class="display d-xs">Persönlich</h3><p class="small">Direkte Zusammenarbeit statt anonymer Agentur.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 03 HERAUSFORDERUNG -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Die Herausforderung</span><span class="pno"><b>03</b> / 10</span></div>
+  <div class="headrow">
+    <div><span class="eyebrow">Die Herausforderung</span><h2 class="display d-l" style="margin-top:22px">Guter Content entsteht<br><span class="muted-d">nicht nebenbei.</span></h2></div>
+    <p class="lead">Die meisten Unternehmen wissen, dass sie sichtbar sein müssen. Woran es scheitert, sind fast immer dieselben vier Punkte.</p>
+  </div>
+  <div class="content">
+    <div class="challenge">
+      <div class="card"><div><div class="big">01</div></div><div><h3 class="display d-s">Zeit</h3><p class="body">Content selbst zu planen, zu drehen und zu schneiden kostet Zeit, die im Tagesgeschäft fehlt.</p></div></div>
+      <div class="card"><div><div class="big">02</div></div><div><h3 class="display d-s">Kontinuität</h3><p class="body">Ein einzelnes Video sorgt nicht automatisch für dauerhafte Sichtbarkeit.</p></div></div>
+      <div class="card"><div><div class="big">03</div></div><div><h3 class="display d-s">Wieder&shy;erkennung</h3><p class="body">Austauschbarer Content macht Marken schwerer erkennbar.</p></div></div>
+      <div class="card"><div><div class="big">04</div></div><div><h3 class="display d-s">Qualität</h3><p class="body">Professionelle Wirkung entsteht durch Konzept, Licht, Kamera und Schnitt.</p></div></div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 04 LÖSUNG -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Meine Lösung</span><span class="pno"><b>04</b> / 10</span></div>
+  <div class="headrow">
+    <div><span class="eyebrow">Meine Lösung</span><h2 class="display d-l" style="margin-top:22px">Von der Idee bis zum<br><span class="ice">fertigen Content.</span></h2></div>
+    <p class="lead">Ich übernehme Konzeption, Produktion und Postproduktion – damit du fertige Inhalte erhältst, die du direkt einsetzen kannst.</p>
+  </div>
+  <div class="content" style="top:258px">
+    <div class="process">
+      <div class="step"><span class="num">01</span><h3 class="display d-xs">Konzept</h3><p class="small">Idee, Story, Ablauf &amp; Shotlist</p></div>
+      <div class="step"><span class="num">02</span><h3 class="display d-xs">Dreh</h3><p class="small">Kamera, Gimbal, Licht, Ton &amp; kreative Perspektiven</p></div>
+      <div class="step"><span class="num">03</span><h3 class="display d-xs">Post</h3><p class="small">Schnitt, Color Grading, Sounddesign &amp; Formate</p></div>
+      <div class="step"><span class="num">04</span><h3 class="display d-xs">Auslieferung</h3><p class="small">Fertig für Instagram, TikTok, YouTube &amp; Website</p></div>
+    </div>
+    <div class="strip" style="height:calc(100% - 128px)">
+      <div class="photo"><img src="img/automotive-audi.jpg" alt="" style="object-position:50% 62%"></div>
+      <div class="photo"><img src="img/gimbal-event.jpg" alt="" style="object-position:50% 30%"></div>
+      <div class="photo"><img src="img/business-sw.jpg" alt="" style="object-position:60% 40%"></div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 05 PORTFOLIO -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Portfolio</span><span class="pno"><b>05</b> / 10</span></div>
+  <div style="position:absolute;top:92px;left:var(--m);right:var(--m);display:flex;justify-content:space-between;align-items:flex-end">
+    <div><span class="eyebrow">Portfolio</span><h2 class="display d-m" style="margin-top:16px">Ausgewählte Arbeiten.</h2></div>
+    <a class="pill ghost" href="https://kmf-media.de/portfolio" style="height:34px;font-size:10px">Mehr auf kmf-media.de <svg><use href="#arrow"/></svg></a>
+  </div>
+  <div class="folio">
+    <div class="photo a"><img src="img/automotive-audi.jpg" alt="" style="object-position:45% 60%"><div class="shade"></div><div class="label"><div><span class="tag">Carporns</span><h3 class="display d-xs" style="margin-top:6px">Automotive</h3></div><span class="num">01</span></div></div>
+    <div class="photo"><img src="img/gimbal-event.jpg" alt="" style="object-position:50% 25%"><div class="shade"></div><div class="label"><div><span class="tag">Event</span><h3 class="display d-xs" style="margin-top:6px">On Location</h3></div><span class="num">02</span></div></div>
+    <div class="photo"><img src="img/business-sw.jpg" alt="" style="object-position:62% 40%"><div class="shade"></div><div class="label"><div><span class="tag">Commercial</span><h3 class="display d-xs" style="margin-top:6px">Business / Brand</h3></div><span class="num">03</span></div></div>
+    <div class="photo"><img src="img/automotive-fiat.jpg" alt="" style="object-position:50% 70%"><div class="shade"></div><div class="label"><div><span class="tag">Carporns</span><h3 class="display d-xs" style="margin-top:6px">Street</h3></div><span class="num">04</span></div></div>
+    <div class="photo"><img src="img/gimbal-low.jpg" alt="" style="object-position:50% 20%"><div class="shade"></div><div class="label"><div><span class="tag">Social Media</span><h3 class="display d-xs" style="margin-top:6px">Behind the Scenes</h3></div><span class="num">05</span></div></div>
+    <div class="photo" style="grid-column: span 2"><img src="img/event-flammen.jpg" alt="" style="object-position:50% 45%"><div class="shade"></div><div class="label"><div><span class="tag">Event</span><h3 class="display d-xs" style="margin-top:6px">Live &amp; Aftermovie</h3></div><span class="num">06</span></div></div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 06 LEISTUNGEN -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Leistungen</span><span class="pno"><b>06</b> / 10</span></div>
+  <div class="headrow">
+    <div><span class="eyebrow">Leistungen</span><h2 class="display d-l" style="margin-top:22px">Sechs Wege,<br><span class="muted-d">dieselbe Handschrift.</span></h2></div>
+    <p class="lead">Die Motive sind verschieden, der Anspruch ist derselbe: Material, das man auch dann zu Ende sieht, wenn man nicht dafür bezahlt hat.</p>
+  </div>
+  <div class="content">
+    <div class="services">
+      <div class="card"><div class="card-head"><span class="tag">Social Media</span><span class="num">01</span></div><h3 class="display d-s">Reels &amp; Social Media</h3><p class="body">Kurzvideos, Produkt-Reels, Mitarbeiter-Content und Ads.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Commercial</span><span class="num">02</span></div><h3 class="display d-s">Imagefilme</h3><p class="body">Unternehmen, Dienstleistungen, Markenstory und Recruiting.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Events</span><span class="num">03</span></div><h3 class="display d-s">Events</h3><p class="body">Aftermovies, Event-Reels, Highlights und Social Clips.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Carporns</span><span class="num">04</span></div><h3 class="display d-s">Automotive</h3><p class="body">Cinematic Fahrzeugaufnahmen, Rolling Shots und Action.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Photography</span><span class="num">05</span></div><h3 class="display d-s">Foto</h3><p class="body">Business, Produkte, Events und Social-Media-Fotografie.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Production Day</span><span class="num">06</span></div><h3 class="display d-s">Content-Drehtag</h3><p class="body">Mehrere Video- und Fotoassets aus einem Produktionstag.</p></div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 07 PREISLISTE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Preisliste</span><span class="pno"><b>07</b> / 10</span></div>
+  <div class="headrow">
+    <div><span class="eyebrow">Preisliste</span><h2 class="display d-l" style="margin-top:22px">Klare Preise.<br><span class="muted-d">Kein Kleingedrucktes.</span></h2></div>
+    <p class="lead">Einzelproduktionen als Orientierung. Der genaue Betrag steht im Angebot, bevor du zusagst.</p>
+  </div>
+  <div class="content">
+    <div class="prices">
+      <div class="card"><div class="card-head"><span class="tag">Social Reel</span><span class="num">01</span></div><div class="price"><span class="ab">ab</span><span class="val">250</span><span class="cur">€</span></div><p class="incl">1 Reel · Dreh · Schnitt · Color Grading</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Reel 3er-Paket</span><span class="num">02</span></div><div class="price"><span class="ab">ab</span><span class="val">650</span><span class="cur">€</span></div><p class="incl">3 Reels · gemeinsamer Dreh · einheitlicher Look</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Imagefilm</span><span class="num">03</span></div><div class="price"><span class="ab">ab</span><span class="val">750</span><span class="cur">€</span></div><p class="incl">Konzept · Dreh · Schnitt · Color · Sounddesign</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Event / Aftermovie</span><span class="num">04</span></div><div class="price"><span class="ab">ab</span><span class="val">650</span><span class="cur">€</span></div><p class="incl">Begleitung · Highlightfilm · Social Cut</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Fotografie</span><span class="num">05</span></div><div class="price"><span class="ab">ab</span><span class="val">250</span><span class="cur">€</span></div><p class="incl">ca. 1–2 Std. Shooting · bearbeitete Auswahl</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Content-Drehtag</span><span class="num">06</span></div><div class="price"><span class="ab">ab</span><span class="val">850</span><span class="cur">€</span></div><p class="incl">bis ca. 6 Std. · Video + Foto · mehrere Assets</p></div>
+    </div>
+    <p class="small note">Alle Preise sind Ab-Preise. Individuelle Projekte werden nach Umfang, Aufwand und Nutzungsumfang kalkuliert.</p>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 08 PAKETE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Content-Pakete</span><span class="pno"><b>08</b> / 10</span></div>
+  <div class="headrow">
+    <div><span class="eyebrow">Content-Pakete</span><h2 class="display d-l" style="margin-top:22px">Sichtbar,<br><span class="ice">jeden Monat.</span></h2></div>
+    <p class="lead">Für alle, die regelmäßig präsent sein wollen: ein fester Rhythmus, ein einheitlicher Look und ein Ansprechpartner.</p>
+  </div>
+  <div class="content">
+    <div class="tiers">
+      <div class="card">
+        <div class="card-head" style="margin:0"><span class="tag">Start</span><span class="num">01</span></div>
+        <div class="price"><span class="val">699</span><span class="cur">€</span></div><span class="per">pro Monat</span>
+        <ul><li><b>4 Reels</b></li><li>1 Produktionstermin</li><li>Konzeption</li><li>Schnitt &amp; Color</li></ul>
+      </div>
+      <div class="card pro">
+        <div class="card-head" style="margin:0"><span class="tag">Pro</span><span class="num">02</span></div>
+        <div class="price"><span class="val">1.099</span><span class="cur">€</span></div><span class="per">pro Monat</span>
+        <ul><li><b>8 Reels</b></li><li>1 Produktionstag</li><li>Foto-Content</li><li>Konzeption &amp; Shotlist</li><li>Social-Media-Formate</li></ul>
+      </div>
+      <div class="card">
+        <div class="card-head" style="margin:0"><span class="tag">Content Plus</span><span class="num">03</span></div>
+        <div class="price"><span class="val">1.499</span><span class="cur">€</span></div><span class="per">pro Monat</span>
+        <ul><li><b>10–12 Reels</b></li><li>bis zu 2 Produktionstermine</li><li>Foto-Content</li><li>Umfangreiche Konzeption</li><li>Mehrere Formate</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 09 ZUSATZLEISTUNGEN -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Zusatzleistungen</span><span class="pno"><b>09</b> / 10</span></div>
+  <div class="split" style="grid-template-columns: 4fr 7fr">
+    <div style="display:flex;flex-direction:column;justify-content:space-between">
+      <div><span class="eyebrow">Zusatzleistungen</span><h2 class="display d-l" style="margin-top:22px;font-size:44px">Alles, was<br><span class="muted-d">dazukommt.</span></h2>
+      <p class="lead" style="margin-top:22px">Extras werden vorher benannt und einzeln ausgewiesen. Nichts davon taucht überraschend auf der Rechnung auf.</p></div>
+      <div class="card flat" style="padding:18px 20px">
+        <span class="eyebrow">Hinweis</span>
+        <p class="small" style="margin-top:10px;color:var(--fog)">Die Preise verstehen sich als transparente Orientierung für ein Solo-/Kleingewerbe.</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <div class="addons">
+        <div class="row"><span class="num">01</span><h3 class="display d-xs">Weiteres Reel</h3><span class="v">150 €</span></div>
+        <div class="row"><span class="num">02</span><h3 class="display d-xs">Zusätzliche Drehstunde</h3><span class="v">90 €</span></div>
+        <div class="row"><span class="num">03</span><h3 class="display d-xs">Foto-Add-on</h3><span class="v"><small>ab</small>150 €</span></div>
+        <div class="row"><span class="num">04</span><h3 class="display d-xs">Drohnenaufnahmen</h3><span class="v"><small>ab</small>120 €</span></div>
+        <div class="row"><span class="num">05</span><h3 class="display d-xs">Express-Postproduktion</h3><span class="v" style="font-size:15px">nach Absprache</span></div>
+        <div class="row"><span class="num">06</span><div><h3 class="display d-xs">Anfahrt</h3><p class="small" style="margin-top:4px">außerhalb des vereinbarten Gebiets</p></div><span class="v"><small>ab</small>0,50 €/km</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 10 ABSCHLUSS -->
+<section class="page closing">
+  <div class="photo bleed"><img src="img/portrait-martin.jpg" alt=""><div class="fade"></div></div>
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span></span><span class="pno" style="position:relative;z-index:2"><b>10</b> / 10</span></div>
+  <div class="copy">
+    <span class="eyebrow">Let’s create</span>
+    <h2 class="display d-xl" style="margin-top:22px">Erzähl mir<br>von deinem<br><span class="ice">Projekt.</span></h2>
+    <p class="lead" style="margin-top:26px;max-width:470px">Deine Marke. Deine Story. Dein Content. Eine kurze Beschreibung reicht für den Anfang – alles Weitere klären wir im Gespräch, kostenlos und unverbindlich.</p>
+    <div class="contact">
+      <span class="k">Web</span><a class="v" href="https://kmf-media.de">kmf-media.de</a>
+      <span class="k">Anfrage</span><a class="v" href="https://kmf-media.de/kontakt">kmf-media.de/kontakt</a>
+      <span class="k">Instagram</span><a class="v" href="https://instagram.com/kmf_media">@kmf_media</a>
+    </div>
+    <div style="margin-top:28px;display:flex;gap:12px">
+      <a class="pill primary" href="https://kmf-media.de/kontakt">Projekt starten <svg><use href="#arrow"/></svg></a>
+    </div>
+  </div>
+  <div class="chrome-bottom" style="right:auto;width:560px"><span>KMF MEDIA · Martin Kendrovszki</span><span>Deutschlandweit</span></div>
+</section>
+
+</body>
+</html>

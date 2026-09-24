@@ -1,0 +1,140 @@
+/* KMF MEDIA – Brand Tokens & Print-Komponenten
+   Abgeleitet von kmf-media.de (Stand 09/2026). Format: DIN A4 quer. */
+@import url("fonts/fonts.css");
+
+:root {
+  /* Farben */
+  --night: #08090A;        /* Grundfläche */
+  --carbon: #0A0C0E;       /* Flächen-Verlauf dunkel */
+  --graphite: #13161A;     /* Flächen-Verlauf hell */
+  --line: #1C2024;         /* feste Linien */
+  --hair: rgba(255,255,255,0.07);  /* Haarlinien */
+  --white: #FFFFFF;
+  --fog: rgba(255,255,255,0.70);   /* Fließtext */
+  --steel: #7A8088;        /* Labels, Meta */
+  --ice: #9AD7F7;          /* einziger Akzent */
+  --ice-15: rgba(154,215,247,0.15);
+
+  /* Flächen */
+  --surface: linear-gradient(145deg, var(--graphite), var(--carbon));
+  --raised: -10px -10px 26px rgba(255,255,255,0.035), 10px 10px 30px rgba(0,0,0,0.75);
+  --raised-sm: -4px -4px 12px rgba(255,255,255,0.03), 5px 5px 14px rgba(0,0,0,0.7);
+
+  /* Typo */
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --sans: "Instrument Sans", Arial, sans-serif;
+
+  /* Raster (Seite 1123 × 794 px) */
+  --m: 56px;               /* Außenrand */
+}
+
+@page { size: 297mm 210mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--night); }
+body {
+  font-family: var(--sans);
+  color: var(--white);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- Seite ---------- */
+.page {
+  position: relative;
+  width: 297mm;
+  height: 210mm;
+  overflow: hidden;
+  background: var(--night);
+  page-break-after: always;
+  break-after: page;
+}
+.page:last-child { page-break-after: auto; break-after: auto; }
+.inner { position: absolute; inset: var(--m); }
+
+/* Kopf- & Fußzeile */
+.chrome-top, .chrome-bottom {
+  position: absolute; left: var(--m); right: var(--m);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--steel);
+}
+.chrome-top { top: 30px; }
+.chrome-bottom { bottom: 26px; padding-top: 12px; border-top: 1px solid var(--hair); }
+.chrome-top .brand { color: var(--white); font-family: var(--display); font-weight: 600; letter-spacing: 0.08em; font-size: 11px; }
+.chrome-top .pno { font-variant-numeric: tabular-nums; }
+.chrome-top .pno b { color: var(--white); font-weight: 500; }
+
+/* ---------- Typografie ---------- */
+.display, h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: var(--white);
+}
+.d-xxl { font-size: 118px; letter-spacing: -0.045em; line-height: 0.86; }
+.d-xl  { font-size: 82px;  letter-spacing: -0.04em;  line-height: 0.88; }
+.d-l   { font-size: 56px;  letter-spacing: -0.03em;  line-height: 0.9; }
+.d-m   { font-size: 34px;  letter-spacing: -0.025em; line-height: 0.95; }
+.d-s   { font-size: 21px;  letter-spacing: -0.015em; line-height: 1.02; }
+.d-xs  { font-size: 15px;  letter-spacing: -0.005em; line-height: 1.1; }
+.muted-d { color: rgba(255,255,255,0.38); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--sans); font-size: 9.5px; font-weight: 500;
+  letter-spacing: 0.26em; text-transform: uppercase; color: var(--steel);
+}
+.eyebrow::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ice);
+  box-shadow: 0 0 10px rgba(154,215,247,0.6);
+}
+.eyebrow.no-dot::before { display: none; }
+.eyebrow .rule { width: 44px; height: 1px; background: rgba(255,255,255,0.18); }
+.tag { font-size: 9px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ice); }
+.num { font-size: 9.5px; letter-spacing: 0.2em; color: var(--steel); font-variant-numeric: tabular-nums; }
+
+.lead { font-size: 15px; line-height: 1.6; color: var(--fog); }
+.body { font-size: 12.5px; line-height: 1.6; color: var(--fog); }
+.small { font-size: 10.5px; line-height: 1.55; color: var(--steel); }
+.ice { color: var(--ice); }
+.white { color: var(--white); }
+
+/* ---------- Komponenten ---------- */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 18px;
+  box-shadow: var(--raised-sm);
+  padding: 24px 24px 22px;
+}
+.card.flat { box-shadow: none; }
+.card .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 40px; padding: 0 22px; border-radius: 999px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.pill.primary { background: var(--ice); color: var(--night); box-shadow: 0 0 28px rgba(154,215,247,0.25); }
+.pill.ghost { background: var(--surface); color: var(--white); border: 1px solid var(--hair); box-shadow: var(--raised-sm); }
+.pill svg { width: 13px; height: 13px; }
+
+.hr { height: 1px; background: var(--hair); }
+.hr-ice { height: 1px; background: linear-gradient(90deg, rgba(154,215,247,0.5), rgba(154,215,247,0)); }
+
+/* Bilder */
+.photo { position: relative; overflow: hidden; border-radius: 18px; background: var(--graphite); }
+.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo.bleed { border-radius: 0; }
+.photo .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(8,9,10,0.85), rgba(8,9,10,0) 55%); }
+.photo .label { position: absolute; left: 16px; bottom: 14px; right: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+
+.grid { display: grid; gap: 16px; }
+.flex { display: flex; }
+.between { justify-content: space-between; }
+.end { align-items: flex-end; }

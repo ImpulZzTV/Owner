@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>KMF MEDIA – Markenbuch</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  a { color: inherit; text-decoration: none; }
+  .area { position: absolute; top: 92px; left: var(--m); right: var(--m); bottom: 70px; }
+  .cols { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 56px; height: 100%; }
+  .cols > .left { display: flex; flex-direction: column; }
+  .cols > * { min-width: 0; }
+  .cols h2 { font-size: 44px; letter-spacing: -0.03em; line-height: 0.92; margin-top: 18px; }
+  .cols .lead { margin-top: 20px; font-size: 13.5px; }
+  .left .foot { margin-top: auto; }
+  .chapter { font-family: var(--display); font-weight: 500; font-size: 150px; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.06); }
+
+  /* Cover */
+  .bb-cover .bg { position: absolute; inset: 0; }
+  .bb-cover .bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; opacity: 0.55; filter: grayscale(0.2); }
+  .bb-cover .bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--night) 10%, rgba(8,9,10,0.6) 55%, rgba(8,9,10,0.2)), linear-gradient(0deg, var(--night), rgba(8,9,10,0) 50%); }
+  .bb-cover .copy { position: absolute; left: var(--m); bottom: 120px; }
+  .bb-cover .mark { font-family: var(--display); font-weight: 500; font-size: 150px; letter-spacing: -0.045em; line-height: 0.82; text-transform: uppercase; }
+
+  /* Inhalt */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; border-top: 1px solid var(--hair); }
+  .toc .row { display: grid; grid-template-columns: 44px 1fr auto; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--hair); }
+  .toc .row .d-xs { font-size: 15px; }
+
+  /* Werte */
+  .values { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; height: 100%; }
+  .values .card { display: flex; flex-direction: column; }
+  .values .d-s { margin: auto 0 10px; }
+
+  /* Logo */
+  .logo-stage { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); grid-template-rows: 1.25fr 1fr; gap: 14px; height: 100%; }
+  .logo-stage .card { display: flex; flex-direction: column; justify-content: space-between; padding: 20px 22px; }
+  .wm { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+  .wm.dot::before { content: ""; display: inline-block; width: 0.18em; height: 0.18em; border-radius: 50%; background: var(--ice); margin-right: 0.35em; vertical-align: 0.28em; box-shadow: 0 0 0.3em rgba(154,215,247,0.6); }
+  .light { background: #F3F5F7 !important; border-color: #E1E5EA !important; color: var(--night); box-shadow: none !important; }
+  .light .small { color: #5b6168; }
+  .ice-bg { background: var(--ice) !important; color: var(--night); box-shadow: none !important; border: none !important; }
+  .ice-bg .small { color: rgba(8,9,10,0.65); }
+  .clear { position: relative; display: inline-block; padding: 26px 34px; border: 1px dashed rgba(154,215,247,0.45); }
+  .clear .x { position: absolute; font-size: 8.5px; color: var(--ice); letter-spacing: 0.1em; }
+  .donts { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+  .dont { border: 1px solid var(--hair); border-radius: 12px; padding: 12px; height: 88px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+  .dont .x { font-size: 9px; color: #F28B82; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  /* Farben */
+  .swatches { display: grid; grid-template-columns: minmax(0,1.4fr) repeat(3, minmax(0,1fr)); grid-template-rows: 1.35fr 1fr; gap: 12px; height: calc(100% - 64px); }
+  .sw { border-radius: 16px; border: 1px solid var(--hair); padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; }
+  .sw .n { font-family: var(--display); font-weight: 500; text-transform: uppercase; font-size: 18px; letter-spacing: -0.01em; }
+  .sw dl { display: grid; grid-template-columns: 50px minmax(0,1fr); font-size: 9.5px; row-gap: 2px; letter-spacing: 0.04em; }
+  .sw dt { color: inherit; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.14em; font-size: 8.5px; padding-top: 1px; }
+  .sw.dark { color: var(--white); }
+  .sw.bright { color: var(--night); }
+  .ratio { display: flex; height: 36px; border-radius: 10px; overflow: hidden; margin-top: 16px; border: 1px solid var(--hair); }
+  .ratio > div { display: flex; align-items: center; padding: 0 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+  /* Typo */
+  .fonts { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap: 14px; height: 100%; }
+  .fonts .card { display: flex; flex-direction: column; padding: 24px 26px; }
+  .spec-big { font-size: 66px; line-height: 0.85; letter-spacing: -0.04em; margin: 18px 0 10px; }
+  .glyphs { font-size: 15px; line-height: 1.35; color: var(--fog); letter-spacing: 0.02em; word-break: break-all; }
+  .weights { display: flex; gap: 18px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--hair); }
+  .weights span { font-size: 11px; color: var(--fog); }
+
+  .scale { border-top: 1px solid var(--hair); }
+  .scale .row { display: grid; grid-template-columns: 90px minmax(0,1fr) 170px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--hair); gap: 18px; }
+  .scale .spec { font-size: 9.5px; line-height: 1.5; color: var(--steel); letter-spacing: 0.04em; }
+
+  /* Elemente */
+  .elements { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); grid-template-rows: auto 1fr; gap: 14px; height: 100%; }
+  .elements .card { display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; }
+  .elements .demo { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; align-items: flex-start; }
+  .mini-card { width: 100%; background: var(--surface); border: 1px solid var(--hair); border-radius: 18px; box-shadow: var(--raised); padding: 18px; }
+
+  /* Raster */
+  .gridpage { position: relative; height: 100%; }
+  .sheet { position: relative; width: 560px; height: 396px; background: var(--night); border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; }
+  .sheet .margin { position: absolute; inset: 28px; border: 1px dashed rgba(154,215,247,0.5); }
+  .sheet .colsx { position: absolute; top: 28px; bottom: 28px; left: 28px; right: 28px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; }
+  .sheet .colsx div { background: rgba(154,215,247,0.06); }
+  .sheet .bar { position: absolute; left: 28px; right: 28px; height: 1px; background: rgba(255,255,255,0.25); }
+  .sheet .t { position: absolute; font-size: 7px; letter-spacing: 0.2em; color: var(--steel); text-transform: uppercase; }
+  .specs { border-top: 1px solid var(--hair); }
+  .specs .row { display: grid; grid-template-columns: 150px 1fr; padding: 10px 0; border-bottom: 1px solid var(--hair); font-size: 11.5px; color: var(--fog); }
+  .specs .row span:first-child { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--steel); padding-top: 2px; }
+
+  /* Bildsprache */
+  .imgs { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr); grid-template-rows: 1fr 1fr; gap: 12px; height: 100%; }
+  .imgs .photo { border-radius: 14px; }
+  .imgs .a { grid-row: span 2; }
+  .rules { list-style: none; border-top: 1px solid var(--hair); margin-top: 22px; }
+  .rules li { display: grid; grid-template-columns: 30px 1fr; padding: 10px 0; border-bottom: 1px solid var(--hair); font-size: 11.5px; color: var(--fog); }
+  .rules li b { display: block; color: var(--white); font-weight: 500; }
+
+  /* Tonalität */
+  .voice { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 14px; height: 100%; grid-template-rows: auto 1fr; }
+  .voice .card { padding: 20px 22px; }
+  .pr { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; grid-column: span 2; }
+  .pr .card .d-xs { margin: 10px 0 6px; }
+  .dd { display: flex; flex-direction: column; }
+  .dd .item { padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  .dd .item:last-child { border: none; }
+  .dd .q { font-family: var(--display); font-size: 15px; font-weight: 500; line-height: 1.25; }
+  .dd.good .q { color: var(--white); }
+  .dd.bad .q { color: rgba(255,255,255,0.4); text-decoration: line-through; text-decoration-color: rgba(242,139,130,0.6); }
+  .ok { color: var(--ice); } .no { color: #F28B82; }
+
+  /* Anwendung */
+  .apps { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 14px; align-content: center; height: 100%; }
+  .thumb { aspect-ratio: 297 / 210; border-radius: 10px; overflow: hidden; border: 1px solid var(--hair); box-shadow: var(--raised-sm); position: relative; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Check */
+  .check { list-style: none; border-top: 1px solid var(--hair); columns: 2; column-gap: 40px; }
+  .check li { break-inside: avoid; display: grid; grid-template-columns: 24px 1fr; padding: 11px 0; border-bottom: 1px solid var(--hair); font-size: 12px; color: var(--fog); }
+  .check li::before { content: ""; width: 10px; height: 10px; margin-top: 4px; border: 1px solid var(--ice); border-radius: 3px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></symbol>
+</svg>
+
+<!-- 01 COVER -->
+<section class="page bb-cover">
+  <div class="bg"><img src="img/automotive-audi.jpg" alt=""></div>
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span style="color:rgba(255,255,255,0.7)">Markenbuch · Version 1.0 · 2026</span></div>
+  <div class="copy">
+    <span class="eyebrow">Corporate Design <span class="rule"></span> Markenlinie</span>
+    <div class="mark" style="margin-top:26px">KMF MEDIA</div>
+    <div class="display d-l" style="margin-top:20px;color:rgba(255,255,255,0.45)">Markenbuch</div>
+    <p class="lead" style="margin-top:26px;max-width:520px">Grundlagen für einen einheitlichen Auftritt – von der Website bis zum Pitchdeck. Abgeleitet aus dem aktuellen Auftritt auf kmf-media.de.</p>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 02 INHALT -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>Inhalt</span><span class="pno"><b>02</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">Inhalt</span>
+      <h2 class="display">Eine Marke.<br><span class="muted-d">Eine Handschrift.</span></h2>
+      <p class="lead">Dieses Markenbuch hält fest, wie KMF MEDIA aussieht, klingt und wirkt. Es gilt für alles, was nach außen geht: Website, Angebote, Pitchdecks, Social Media, Rechnungen.</p>
+      <p class="small foot">Quelle: Analyse von kmf-media.de (Farben, Schriften, Komponenten und Texte), Stand September 2026.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <div class="toc">
+        <div>
+          <div class="row"><span class="num">01</span><h3 class="display d-xs">Marke &amp; Haltung</h3><span class="num">03</span></div>
+          <div class="row"><span class="num">02</span><h3 class="display d-xs">Werte</h3><span class="num">04</span></div>
+          <div class="row"><span class="num">03</span><h3 class="display d-xs">Wortmarke</h3><span class="num">05</span></div>
+          <div class="row"><span class="num">04</span><h3 class="display d-xs">Farben</h3><span class="num">06</span></div>
+          <div class="row"><span class="num">05</span><h3 class="display d-xs">Schriften</h3><span class="num">07</span></div>
+          <div class="row"><span class="num">06</span><h3 class="display d-xs">Hierarchie</h3><span class="num">08</span></div>
+        </div>
+        <div>
+          <div class="row"><span class="num">07</span><h3 class="display d-xs">Gestaltungselemente</h3><span class="num">09</span></div>
+          <div class="row"><span class="num">08</span><h3 class="display d-xs">Raster &amp; Layout</h3><span class="num">10</span></div>
+          <div class="row"><span class="num">09</span><h3 class="display d-xs">Bildsprache</h3><span class="num">11</span></div>
+          <div class="row"><span class="num">10</span><h3 class="display d-xs">Tonalität</h3><span class="num">12</span></div>
+          <div class="row"><span class="num">11</span><h3 class="display d-xs">Anwendung</h3><span class="num">13</span></div>
+          <div class="row"><span class="num">12</span><h3 class="display d-xs">Checkliste</h3><span class="num">14</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 03 MARKE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>01 · Marke &amp; Haltung</span><span class="pno"><b>03</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">01 · Marke &amp; Haltung</span>
+      <h2 class="display">Ein Mensch,<br>eine Kamera,<br><span class="ice">eine Handschrift.</span></h2>
+      <p class="lead">KMF MEDIA ist Martin Kendrovszki. Kein wechselndes Team, keine Weitergabe an Dritte. Wer anfragt, spricht mit der Person, die filmt, schneidet und abliefert.</p>
+      <div class="chapter foot">01</div>
+    </div>
+    <div style="display:grid;grid-template-rows:1fr auto;gap:14px">
+      <div class="card" style="padding:30px 30px 26px;display:flex;flex-direction:column;justify-content:space-between">
+        <span class="tag">Claim</span>
+        <div class="display d-xl" style="margin-top:16px">Filme, die bleiben.</div>
+        <p class="body" style="margin-top:16px;max-width:520px">Der Claim steht für den Anspruch der Marke: Material, das man auch dann zu Ende sieht, wenn man nicht dafür bezahlt hat.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div class="card flat"><span class="tag">Name</span><h3 class="display d-s" style="margin:14px 0 8px">KMF MEDIA</h3><p class="small">Immer in Versalien, mit Leerzeichen. Die frühere Bezeichnung „Kenmafilms“ wird nicht mehr verwendet.</p></div>
+        <div class="card flat"><span class="tag">Leistung</span><h3 class="display d-s" style="margin:14px 0 8px">Video · Foto · Content</h3><p class="small">Automotive, Social Media, Hochzeiten, Fotografie, Drohne, Commercial.</p></div>
+        <div class="card flat"><span class="tag">Reichweite</span><h3 class="display d-s" style="margin:14px 0 8px">Deutsch&shy;landweit</h3><p class="small">Persönlich vor Ort, egal ob Einzelprojekt oder laufende Content-Produktion.</p></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 04 WERTE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>02 · Werte</span><span class="pno"><b>04</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">02 · Werte</span>
+      <h2 class="display">Wofür die<br>Marke <span class="muted-d">steht.</span></h2>
+      <p class="lead">Vier Prinzipien, die sich durch jeden Dreh, jeden Text und jedes Layout ziehen. Wenn eine Gestaltungsentscheidung unklar ist, entscheiden diese vier.</p>
+      <div class="chapter foot">02</div>
+    </div>
+    <div class="values">
+      <div class="card"><div class="card-head"><span class="tag">Handschrift</span><span class="num">01</span></div><h3 class="display d-s">Kino statt Werbung</h3><p class="body">Geschnitten wie ein Trailer, nicht wie ein Verkaufsvideo. Licht, Timing und Perspektive sind geplant, nicht Zufall.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Persönlich</span><span class="num">02</span></div><h3 class="display d-s">Eine Person, ein Ansprech&shy;partner</h3><p class="body">Kurze Absprachen, direkte Wege. Die Marke spricht in der Ich-Form und duzt.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Ehrlichkeit</span><span class="num">03</span></div><h3 class="display d-s">Transparent, bevor du zusagst</h3><p class="body">Kosten werden vorher benannt. Und wenn ein Projekt nicht passt, wird das auch gesagt.</p></div>
+      <div class="card"><div class="card-head"><span class="tag">Reduktion</span><span class="num">04</span></div><h3 class="display d-s">Weniger, aber besser</h3><p class="body">Dunkle Flächen, viel Luft, ein Akzent. Die Bilder sind der Star – das Layout tritt zurück.</p></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 05 WORTMARKE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>03 · Wortmarke</span><span class="pno"><b>05</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">03 · Wortmarke</span>
+      <h2 class="display">Das Logo ist<br><span class="muted-d">der Name.</span></h2>
+      <p class="lead">KMF MEDIA arbeitet mit einer typografischen Wortmarke aus Archivo SemiBold in Versalien. Der eisblaue Punkt ist das Signet – er markiert die Marke, Labels und Aufzählungen.</p>
+      <div class="specs foot" style="margin-top:auto">
+        <div class="row"><span>Schrift</span><span>Archivo 600, Versalien, Laufweite +20</span></div>
+        <div class="row"><span>Schutzzone</span><span>Höhe des „K“ auf allen Seiten</span></div>
+        <div class="row"><span>Mindestgröße</span><span>Druck 4 mm Höhe · Screen 12 px</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-rows:1fr auto;gap:14px">
+      <div class="logo-stage">
+        <div class="card" style="grid-row: span 2"><span class="tag">Primär · auf Night</span>
+          <div style="display:flex;justify-content:center;align-items:center;flex:1">
+            <div class="clear"><span class="x" style="top:8px;left:50%;transform:translateX(-50%)">K</span><span class="x" style="left:10px;top:50%;transform:translateY(-50%)">K</span><span class="x" style="right:10px;top:50%;transform:translateY(-50%)">K</span><span class="x" style="bottom:6px;left:50%;transform:translateX(-50%)">K</span><span class="wm dot" style="font-size:32px">KMF MEDIA</span></div>
+          </div>
+          <p class="small">Standard für alle dunklen Anwendungen. Weiß auf #08090A.</p></div>
+        <div class="card light"><span class="tag" style="color:#3c8fb8">Negativ · auf hell</span><div class="wm dot" style="font-size:30px;color:var(--night)">KMF MEDIA</div><p class="small">Night auf Weiß – nur wo Dunkel nicht möglich ist.</p></div>
+        <div class="card ice-bg"><span class="tag" style="color:rgba(8,9,10,0.6)">Auf Akzent</span><div class="wm" style="font-size:30px">KMF MEDIA</div><p class="small">Night auf Ice, ohne Punkt. Sparsam einsetzen.</p></div>
+      </div>
+      <div class="donts">
+        <div class="dont"><span class="x">✕ Nicht verzerren</span><span class="wm" style="font-size:20px;transform:scaleX(1.45);transform-origin:left">KMF MEDIA</span></div>
+        <div class="dont"><span class="x">✕ Keine Fremdfarben</span><span class="wm" style="font-size:20px;color:#D4A24C">KMF MEDIA</span></div>
+        <div class="dont"><span class="x">✕ Keine Effekte</span><span class="wm" style="font-size:20px;background:linear-gradient(90deg,#9AD7F7,#e36bff);-webkit-background-clip:text;color:transparent;text-shadow:none">KMF MEDIA</span></div>
+        <div class="dont"><span class="x">✕ Alter Name</span><span class="wm" style="font-size:20px;color:rgba(255,255,255,0.5)">Kenmafilms</span></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 06 FARBEN -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>04 · Farben</span><span class="pno"><b>06</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">04 · Farben</span>
+      <h2 class="display">Nacht und<br><span class="ice">ein Licht.</span></h2>
+      <p class="lead">Die Palette ist fast monochrom: kühles Schwarz, abgestufte Grautöne und Weiß. Einziger Akzent ist Ice – wie das erste Licht vor Sonnenaufgang.</p>
+      <p class="small" style="margin-top:14px">Ice wird nie großflächig eingesetzt: nur für den Primär-Button, das Signet, Labels und einzelne Schlüsselwörter in Headlines.</p>
+      <div class="chapter foot">04</div>
+    </div>
+    <div>
+      <div class="swatches">
+        <div class="sw dark" style="background:#08090A;grid-row:span 2"><div><span class="tag" style="color:var(--steel)">Grundfarbe</span><div class="n" style="margin-top:8px;font-size:30px">Night</div></div>
+          <dl><dt>Hex</dt><dd>#08090A</dd><dt>RGB</dt><dd>8 · 9 · 10</dd><dt>CMYK</dt><dd>Tiefschwarz 60 · 40 · 30 · 100</dd><dt>Einsatz</dt><dd>Hintergrund aller Flächen</dd></dl></div>
+        <div class="sw dark" style="background:#13161A"><div class="n">Graphite</div><dl><dt>Hex</dt><dd>#13161A</dd><dt>RGB</dt><dd>19 · 22 · 26</dd><dt>Einsatz</dt><dd>Karten (Verlauf-Start)</dd></dl></div>
+        <div class="sw dark" style="background:#0A0C0E"><div class="n">Carbon</div><dl><dt>Hex</dt><dd>#0A0C0E</dd><dt>RGB</dt><dd>10 · 12 · 14</dd><dt>Einsatz</dt><dd>Karten (Verlauf-Ende)</dd></dl></div>
+        <div class="sw dark" style="background:#1C2024"><div class="n">Line</div><dl><dt>Hex</dt><dd>#1C2024</dd><dt>RGB</dt><dd>28 · 32 · 36</dd><dt>Einsatz</dt><dd>Trennlinien, Rahmen</dd></dl></div>
+        <div class="sw bright" style="background:#9AD7F7;border:none;box-shadow:0 0 40px rgba(154,215,247,0.18)"><div class="n">Ice</div><dl><dt>Hex</dt><dd>#9AD7F7</dd><dt>RGB</dt><dd>154 · 215 · 247</dd><dt>CMYK</dt><dd>≈ 38 · 13 · 0 · 3</dd></dl></div>
+        <div class="sw bright" style="background:#FFFFFF"><div class="n">White</div><dl><dt>Hex</dt><dd>#FFFFFF</dd><dt>Einsatz</dt><dd>Headlines</dd><dt>70 %</dt><dd>Fließtext (Fog)</dd></dl></div>
+        <div class="sw dark" style="background:#7A8088"><div class="n">Steel</div><dl><dt>Hex</dt><dd>#7A8088</dd><dt>RGB</dt><dd>122 · 128 · 136</dd><dt>Einsatz</dt><dd>Labels, Meta</dd></dl></div>
+      </div>
+      <div class="ratio">
+        <div style="width:72%;background:#08090A;color:var(--steel)">Night 72 %</div>
+        <div style="width:14%;background:#13161A;color:var(--steel)">Flächen</div>
+        <div style="width:9%;background:#fff;color:var(--night)">Text</div>
+        <div style="width:5%;background:#9AD7F7"></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 07 SCHRIFTEN -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>05 · Schriften</span><span class="pno"><b>07</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">05 · Schriften</span>
+      <h2 class="display">Zwei Schriften.<br><span class="muted-d">Klare Rollen.</span></h2>
+      <p class="lead">Archivo trägt die Botschaft – groß, in Versalien, eng gesetzt. Instrument Sans erklärt – ruhig, gut lesbar, mit Luft.</p>
+      <p class="small" style="margin-top:14px">Beide Schriften sind kostenlos bei Google Fonts erhältlich (SIL Open Font License). Ersatz, falls nicht verfügbar: Arial.</p>
+      <div class="chapter foot">05</div>
+    </div>
+    <div class="fonts">
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Display · Headlines</span><span class="num">A</span></div>
+        <div class="display spec-big">Archivo</div>
+        <div class="glyphs" style="font-family:var(--display);font-weight:500">ABCDEFGHIJKLMNOPQRSTUVWXYZ ÄÖÜ 0123456789 €&amp;.,–</div>
+        <div class="display" style="margin-top:auto;font-size:30px;letter-spacing:-0.03em;line-height:0.92">Sechs Wege,<br><span class="muted-d">dieselbe Handschrift.</span></div>
+        <div class="weights" style="margin-top:22px"><span style="font-family:var(--display);font-weight:500">Medium 500 · Headlines</span><span style="font-family:var(--display);font-weight:600">SemiBold 600 · Wortmarke</span></div></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Text · Fließtext &amp; Labels</span><span class="num">B</span></div>
+        <div class="spec-big" style="font-family:var(--sans);font-size:50px;line-height:0.95;letter-spacing:-0.03em;margin-top:18px">Instrument<br>Sans</div>
+        <div class="glyphs" style="font-size:15px">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz ß 0123456789</div>
+        <p class="body" style="margin-top:auto">Ich bin Martin Kendrovszki, und KMF MEDIA bin ebenfalls ich. Du sprichst mit der Person, die filmt, schneidet und am Ende abliefert. Das macht Absprachen kurz und das Ergebnis persönlich.</p>
+        <div class="weights" style="margin-top:22px"><span>Regular 400 · Text</span><span style="font-weight:500">Medium 500 · Buttons</span></div></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 08 HIERARCHIE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>06 · Hierarchie</span><span class="pno"><b>08</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">06 · Hierarchie</span>
+      <h2 class="display">Groß, eng,<br><span class="muted-d">in Versalien.</span></h2>
+      <p class="lead">Headlines sind kurz und enden mit einem Punkt. Negative Laufweite und knapper Zeilenabstand geben ihnen die Wucht eines Filmtitels.</p>
+      <p class="small" style="margin-top:14px">Ein Wort oder eine Zeile der Headline darf in Ice oder 40 % Weiß abgesetzt werden – nie mehr als eine.</p>
+      <div class="chapter foot">06</div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <div class="scale">
+        <div class="row"><span class="tag">Hero</span><div class="display" style="font-size:44px;letter-spacing:-0.045em;line-height:0.86">Filme,<br>die bleiben.</div><span class="spec">Archivo 500 · Versalien<br>Laufweite −45 · ZA 0,85<br>Web 120–190 px · Print 80–120 pt</span></div>
+        <div class="row"><span class="tag">Headline</span><div class="display" style="font-size:24px;letter-spacing:-0.03em;white-space:nowrap">Das Wichtigste vorab.</div><span class="spec">Archivo 500 · Versalien<br>Laufweite −30 · ZA 0,9<br>Web 52–76 px · Print 32–44 pt</span></div>
+        <div class="row"><span class="tag">Titel</span><div class="display d-s">Automotive Videografie</div><span class="spec">Archivo 500 · Versalien<br>Laufweite −15 · ZA 1,0<br>Web 24–32 px · Print 15–21 pt</span></div>
+        <div class="row"><span class="tag">Fließtext</span><p class="lead" style="font-size:14px">Eine kurze Beschreibung reicht für den Anfang.</p><span class="spec">Instrument Sans 400 · 70 % Weiß<br>ZA 1,6 · Web 16 px · Print 10–12 pt</span></div>
+        <div class="row"><span class="tag">Label</span><span class="eyebrow">Hinter der Kamera</span><span class="spec">Instrument Sans 500 · Versalien<br>Laufweite +260 · Steel + Ice-Punkt<br>Web 11 px · Print 7–8 pt</span></div>
+        <div class="row"><span class="tag">Button</span><span><span class="pill primary" style="height:34px;font-size:10px">Projekt starten <svg><use href="#arrow"/></svg></span></span><span class="spec">Instrument Sans 500 · Versalien<br>Laufweite +140 · Pill, Radius voll</span></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 09 ELEMENTE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>07 · Gestaltungselemente</span><span class="pno"><b>09</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">07 · Gestaltungselemente</span>
+      <h2 class="display">Wenige<br>Bausteine.<br><span class="muted-d">Konsequent.</span></h2>
+      <p class="lead">Alle Layouts entstehen aus denselben sechs Elementen. Neue Elemente werden nur ergänzt, wenn keines der bestehenden passt.</p>
+      <div class="chapter foot">07</div>
+    </div>
+    <div class="elements" style="grid-template-rows:1fr 1fr">
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Label</span><span class="num">01</span></div><div class="demo"><span class="eyebrow">Häufig gefragt</span><span class="eyebrow">Hinter der Kamera</span></div><p class="small">Kündigt Abschnitte an. Immer mit Ice-Punkt.</p></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Buttons</span><span class="num">02</span></div><div class="demo"><span class="pill primary">Projekt starten <svg><use href="#arrow"/></svg></span><span class="pill ghost">Portfolio ansehen</span></div><p class="small">Ein Primär-Button pro Seite. Pfeil nur bei Handlung.</p></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Karte</span><span class="num">03</span></div><div class="demo"><div class="mini-card"><div style="display:flex;justify-content:space-between"><span class="tag">Carporns</span><span class="num">01</span></div><div class="display d-xs" style="margin-top:14px">Automotive</div></div></div><p class="small">Verlauf Graphite → Carbon, Radius 18 px, weiche Tiefe.</p></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Nummerierung</span><span class="num">04</span></div><div class="demo"><div style="display:flex;gap:18px;align-items:baseline"><span class="num">01</span><span class="num">02</span><span class="num">03</span><span class="num" style="color:var(--white)">04</span></div><div class="display" style="font-size:56px;color:rgba(255,255,255,0.1);letter-spacing:-0.04em">01</div></div><p class="small">Zweistellig, immer. Klein als Meta, groß als Gliederung.</p></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Linien</span><span class="num">05</span></div><div class="demo" style="align-items:stretch"><div class="hr"></div><div class="hr-ice"></div><div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid var(--hair);padding-bottom:8px"><span>Was kostet ein Projekt?</span><span style="color:var(--ice)">+</span></div></div><p class="small">Haarlinien 7 % Weiß gliedern Listen und Tabellen.</p></div>
+      <div class="card"><div class="card-head" style="margin:0"><span class="tag">Bildfläche</span><span class="num">06</span></div><div class="demo" style="align-items:stretch"><div class="photo" style="height:92px;border-radius:14px"><img src="img/automotive-fiat.jpg" alt="" style="object-position:50% 70%"><div class="shade"></div><div class="label"><span class="display d-xs" style="font-size:12px">Street</span><span class="num">04</span></div></div></div><p class="small">Verlauf nach Night von unten – Text liegt immer im Dunkel.</p></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 10 RASTER -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>08 · Raster &amp; Layout</span><span class="pno"><b>10</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">08 · Raster &amp; Layout</span>
+      <h2 class="display">Viel Luft.<br><span class="muted-d">Klare Kanten.</span></h2>
+      <p class="lead">Ein 12-Spalten-Raster mit großzügigen Rändern. Headlines links, Erklärung rechts – so lesen sich Seiten wie Filmtitel mit Untertitel.</p>
+      <div class="chapter foot">08</div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:26px">
+      <div class="sheet">
+        <div class="colsx"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="margin"></div>
+        <span class="t" style="top:12px;left:28px;color:#fff">KMF MEDIA</span><span class="t" style="top:12px;left:50%;transform:translateX(-50%)">Abschnitt</span><span class="t" style="top:12px;right:28px">02 / 10</span>
+        <div style="position:absolute;left:44px;top:60px"><span class="t" style="position:static;color:var(--ice)">● Label</span><div class="display" style="font-size:26px;margin-top:8px;letter-spacing:-0.03em">Headline<br>in zwei Zeilen.</div></div>
+        <div style="position:absolute;right:44px;top:92px;width:170px;height:34px;display:grid;gap:5px"><div style="height:4px;background:rgba(255,255,255,0.3)"></div><div style="height:4px;background:rgba(255,255,255,0.3)"></div><div style="height:4px;width:70%;background:rgba(255,255,255,0.3)"></div></div>
+        <div style="position:absolute;left:44px;right:44px;top:150px;bottom:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div style="border-radius:8px;background:linear-gradient(145deg,#13161A,#0A0C0E);border:1px solid rgba(255,255,255,0.1)"></div><div style="border-radius:8px;background:linear-gradient(145deg,#13161A,#0A0C0E);border:1px solid rgba(154,215,247,0.4)"></div><div style="border-radius:8px;background:linear-gradient(145deg,#13161A,#0A0C0E);border:1px solid rgba(255,255,255,0.1)"></div></div>
+        <div class="bar" style="bottom:40px"></div>
+        <span class="t" style="bottom:22px;left:28px">Filme, die bleiben.</span><span class="t" style="bottom:22px;right:28px">kmf-media.de</span>
+      </div>
+      <div class="specs">
+        <div class="row"><span>Format</span><span>DIN A4 quer (297 × 210 mm) für Decks und Angebote · 16 : 9 für Präsentationen am Screen</span></div>
+        <div class="row"><span>Ränder</span><span>15 mm außen · Kopfzeile 8 mm, Fußzeile 7 mm vom Rand</span></div>
+        <div class="row"><span>Raster</span><span>12 Spalten · Abstand 4 mm · Kartenabstand 4 mm</span></div>
+        <div class="row"><span>Kopf &amp; Fuß</span><span>Wortmarke · Abschnitt · Seitenzahl „02 / 10“ – Claim · kmf-media.de über einer Haarlinie</span></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 11 BILDSPRACHE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>09 · Bildsprache</span><span class="pno"><b>11</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">09 · Bildsprache</span>
+      <h2 class="display">Licht, das<br><span class="muted-d">erzählt.</span></h2>
+      <ul class="rules">
+        <li><span class="num">01</span><span><b>Cinematisch</b>Geringe Schärfentiefe, echte Perspektiven, Bewegung.</span></li>
+        <li><span class="num">02</span><span><b>Natürliches Licht</b>Goldene Stunde, Gegenlicht, tiefe Schatten.</span></li>
+        <li><span class="num">03</span><span><b>Echte Momente</b>Keine gestellten Stockposen. Hinter-den-Kulissen ist erwünscht.</span></li>
+        <li><span class="num">04</span><span><b>Schwarz-Weiß</b>Für Porträts erlaubt – nie gemischt mit Farbfiltern.</span></li>
+        <li><span class="num">05</span><span><b>Dunkler Rand</b>Bilder laufen in Night aus; Text nie auf hellen Bildstellen.</span></li>
+      </ul>
+    </div>
+    <div class="imgs">
+      <div class="photo a"><img src="img/automotive-audi.jpg" alt="" style="object-position:45% 60%"><div class="shade"></div><div class="label"><span class="tag">Goldene Stunde</span></div></div>
+      <div class="photo"><img src="img/event-flammen.jpg" alt="" style="object-position:50% 40%"><div class="shade"></div><div class="label"><span class="tag">Energie</span></div></div>
+      <div class="photo"><img src="img/business-sw.jpg" alt="" style="object-position:62% 40%"><div class="shade"></div><div class="label"><span class="tag">Schwarz-Weiß</span></div></div>
+      <div class="photo"><img src="img/studio-set.jpg" alt="" style="object-position:50% 40%"><div class="shade"></div><div class="label"><span class="tag">Behind the Scenes</span></div></div>
+      <div class="photo"><img src="img/automotive-fiat.jpg" alt="" style="object-position:50% 70%"><div class="shade"></div><div class="label"><span class="tag">Street</span></div></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 12 TONALITÄT -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>10 · Tonalität</span><span class="pno"><b>12</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">10 · Tonalität</span>
+      <h2 class="display">Sagen,<br><span class="muted-d">was ist.</span></h2>
+      <p class="lead">KMF MEDIA klingt wie ein Gespräch am Set: direkt, ruhig, ehrlich. Kurze Sätze. Keine Superlative. Konkret statt blumig.</p>
+      <div class="chapter foot">10</div>
+    </div>
+    <div class="voice">
+      <div class="pr">
+        <div class="card flat"><span class="num">01</span><h3 class="display d-xs">Du &amp; Ich</h3><p class="small">Die Marke duzt und spricht als Martin in der Ich-Form.</p></div>
+        <div class="card flat"><span class="num">02</span><h3 class="display d-xs">Kurz</h3><p class="small">Ein Gedanke pro Satz. Headlines mit Punkt.</p></div>
+        <div class="card flat"><span class="num">03</span><h3 class="display d-xs">Ehrlich</h3><p class="small">Grenzen benennen. Kosten vorher offenlegen.</p></div>
+        <div class="card flat"><span class="num">04</span><h3 class="display d-xs">Konkret</h3><p class="small">Zeigen, was passiert – statt zu behaupten, wie gut es ist.</p></div>
+      </div>
+      <div class="card"><span class="tag ok">✓ So klingen wir</span>
+        <div class="dd good" style="margin-top:8px">
+          <div class="item"><div class="q">„Du sprichst mit der Person, die filmt, schneidet und am Ende abliefert.“</div></div>
+          <div class="item"><div class="q">„Der Betrag steht im Angebot, bevor du zusagst.“</div></div>
+          <div class="item"><div class="q">„Erzähl mir von deinem Projekt.“</div></div>
+        </div></div>
+      <div class="card"><span class="tag no">✕ So nicht</span>
+        <div class="dd bad" style="margin-top:8px">
+          <div class="item"><div class="q">„Wir sind Ihre Full-Service-Agentur Nr. 1 für innovative Premium-Lösungen!“</div></div>
+          <div class="item"><div class="q">„Preise auf Anfrage.“</div></div>
+          <div class="item"><div class="q">„Jetzt unverbindlich kontaktieren!!!“</div></div>
+        </div></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 13 ANWENDUNG -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>11 · Anwendung</span><span class="pno"><b>13</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">11 · Anwendung</span>
+      <h2 class="display">Das Pitch&shy;deck<br><span class="ice">in der Linie.</span></h2>
+      <p class="lead">Das Pitchdeck mit Preisliste wurde nach diesem Markenbuch neu gesetzt – gleiche Farben, Schriften und Bausteine wie auf kmf-media.de.</p>
+      <p class="small" style="margin-top:14px">Datei: KMF-MEDIA_Pitchdeck_Preise_2026.pdf</p>
+      <div class="chapter foot">11</div>
+    </div>
+    <div class="apps">
+      <div class="thumb"><img src="img/deck-01.jpg" alt=""></div>
+      <div class="thumb"><img src="img/deck-04.jpg" alt=""></div>
+      <div class="thumb"><img src="img/deck-07.jpg" alt=""></div>
+      <div class="thumb"><img src="img/deck-08.jpg" alt=""></div>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+<!-- 14 CHECKLISTE -->
+<section class="page">
+  <div class="chrome-top"><span class="brand">KMF MEDIA</span><span>12 · Checkliste</span><span class="pno"><b>14</b> / 14</span></div>
+  <div class="area"><div class="cols">
+    <div class="left">
+      <span class="eyebrow">12 · Checkliste</span>
+      <h2 class="display">Bevor etwas<br><span class="muted-d">rausgeht.</span></h2>
+      <p class="lead">Zehn Fragen für jedes Dokument, jeden Post und jede Präsentation.</p>
+      <div class="foot"><span class="wm dot" style="font-size:26px">KMF MEDIA</span><p class="small" style="margin-top:10px">Filme, die bleiben.<br>Martin Kendrovszki · Deutschlandweit · kmf-media.de</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <ul class="check">
+        <li>Heißt die Marke überall KMF MEDIA – nirgends mehr Kenmafilms?</li>
+        <li>Ist der Hintergrund Night (#08090A)?</li>
+        <li>Kommt Ice nur als Akzent vor – Button, Punkt, ein Wort?</li>
+        <li>Gibt es höchstens einen Primär-Button?</li>
+        <li>Sind Headlines Archivo, Versalien, eng gesetzt, mit Punkt?</li>
+        <li>Ist Fließtext Instrument Sans in 70 % Weiß?</li>
+        <li>Hat jeder Abschnitt ein Label mit Ice-Punkt?</li>
+        <li>Liegt Text auf Bildern immer im dunklen Verlauf?</li>
+        <li>Duzt der Text und spricht in der Ich-Form?</li>
+        <li>Stehen Preise und Extras klar da – ohne Kleingedrucktes?</li>
+      </ul>
+    </div>
+  </div></div>
+  <div class="chrome-bottom"><span>Markenbuch 1.0</span><span>kmf-media.de</span></div>
+</section>
+
+</body>
+</html>
