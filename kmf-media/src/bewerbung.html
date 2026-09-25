@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Bewerbung – KMF MEDIA</title>
+<link rel="stylesheet" href="brand.css">
+<!-- Profil: profil.js (lokal, nicht im Repo) überschreibt das Beispiel -->
+<script src="bewerbung/profil.example.js"></script>
+<script src="bewerbung/profil.js" onerror="void 0"></script>
+<style>
+  /* A4 hoch */
+  @page { size: 210mm 297mm; margin: 0; }
+  .page { width: 210mm; height: 297mm; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Platzhalter – werden durch URL-Parameter ersetzt */
+  .ph { color: var(--ice); background: rgba(154,215,247,0.10); border-radius: 4px; padding: 0 4px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+  .kv .k { font-size: 8.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--steel); display: block; margin-bottom: 4px; }
+  .kv .v { font-size: 12px; color: var(--white); }
+
+  /* 01 Deckblatt */
+  .cover .hero { position: absolute; top: 0; left: 0; right: 0; height: 780px; }
+  .cover .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
+  .cover .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--night) 0%, rgba(8,9,10,0.55) 30%, rgba(8,9,10,0) 60%), linear-gradient(180deg, rgba(8,9,10,0.55), rgba(8,9,10,0) 18%); }
+  .cover .copy { position: absolute; left: var(--m); right: var(--m); top: 610px; }
+  .cover h1 { font-size: 84px; letter-spacing: -0.045em; line-height: 0.86; margin-top: 22px; }
+  .cover .for { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .cover .contact { position: absolute; left: var(--m); right: var(--m); bottom: 70px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; border-top: 1px solid var(--hair); padding-top: 16px; }
+
+  /* 02 Anschreiben */
+  .letter .top { position: absolute; top: 88px; left: var(--m); right: var(--m); display: grid; grid-template-columns: 1fr 210px; gap: 40px; }
+  .letter .to .v, .letter .from .v { font-size: 12px; line-height: 1.6; }
+  .letter .to .v b { font-weight: 500; color: var(--white); }
+  .letter .from { border-left: 1px solid var(--hair); padding-left: 18px; }
+  .letter .from .v { color: var(--fog); font-size: 11px; }
+  .letter .from .v b { color: var(--white); font-weight: 500; font-size: 12px; }
+  .letter .main { position: absolute; top: 250px; left: var(--m); right: var(--m); bottom: 70px; display: flex; flex-direction: column; }
+  .letter .date { text-align: right; font-size: 11px; color: var(--steel); letter-spacing: 0.02em; }
+  .letter h2 { font-size: 30px; letter-spacing: -0.03em; line-height: 0.95; margin-top: 12px; }
+  .letter .text { margin-top: 22px; font-size: 12.5px; line-height: 1.62; color: var(--fog); }
+  .letter .text p + p, .letter .text ul + p, .letter .text p + ul { margin-top: 11px; }
+  .letter .text .hi { color: var(--white); }
+  .letter ul { list-style: none; border-top: 1px solid var(--hair); }
+  .letter li { display: grid; grid-template-columns: 18px 1fr; padding: 7px 0; border-bottom: 1px solid var(--hair); }
+  .letter li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ice); margin-top: 7px; box-shadow: 0 0 8px rgba(154,215,247,0.5); }
+  .letter li b { color: var(--white); font-weight: 500; }
+  .letter .sign { margin-top: 20px; }
+  .letter .sign .name { color: var(--white); font-family: var(--display); font-weight: 500; text-transform: uppercase; font-size: 22px; letter-spacing: -0.02em; margin-top: 30px; }
+  .letter .att { margin-top: auto; display: flex; gap: 10px; align-items: center; }
+  .chip { display: inline-flex; align-items: center; height: 24px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--hair); background: var(--surface); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fog); }
+
+  /* 03 Lebenslauf */
+  .cv .grid2 { position: absolute; top: 88px; left: var(--m); right: var(--m); bottom: 70px; display: grid; grid-template-columns: 218px minmax(0,1fr); gap: 34px; }
+  .cv .side { background: var(--surface); border: 1px solid var(--hair); border-radius: 18px; box-shadow: var(--raised-sm); padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 18px; }
+  .cv .side .photo { height: 300px; border-radius: 12px; }
+  .cv .side .sec { padding: 0 6px; }
+  .cv .side .sec > .eyebrow { margin-bottom: 10px; }
+  .cv .side .line { font-size: 11px; color: var(--fog); line-height: 1.55; word-break: break-word; }
+  .cv .side .line b { color: var(--white); font-weight: 500; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tags span { font-size: 9.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--hair); color: var(--fog); background: rgba(255,255,255,0.02); }
+  .cv .headline h2 { font-size: 46px; letter-spacing: -0.04em; line-height: 0.88; margin-top: 16px; }
+  .cv .headline .lead { margin-top: 16px; font-size: 12.5px; }
+  .tl-title { display: flex; align-items: center; gap: 14px; margin: 26px 0 4px; }
+  .tl-title .hr { flex: 1; }
+  .tl .item { display: grid; grid-template-columns: 104px minmax(0,1fr); gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--hair); }
+  .tl .item:last-child { border-bottom: none; }
+  .tl .zeit { font-size: 9.5px; letter-spacing: 0.1em; color: var(--steel); padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .tl .item:first-child .zeit { color: var(--ice); }
+  .tl .t { font-family: var(--display); font-weight: 500; text-transform: uppercase; font-size: 14px; letter-spacing: -0.01em; line-height: 1.1; }
+  .tl .o { font-size: 11px; color: var(--steel); margin-top: 3px; }
+  .tl ul { list-style: none; margin-top: 6px; }
+  .tl li { font-size: 11px; color: var(--fog); line-height: 1.5; padding-left: 12px; position: relative; }
+  .tl li::before { content: ""; position: absolute; left: 0; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--ice); }
+
+  /* 04 Arbeitsproben */
+  .work .head { position: absolute; top: 88px; left: var(--m); right: var(--m); display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 30px; align-items: end; }
+  .work .head h2 { font-size: 50px; letter-spacing: -0.04em; line-height: 0.88; margin-top: 16px; }
+  .work .gal { position: absolute; top: 268px; left: var(--m); right: var(--m); height: 470px; display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; }
+  .work .gal .photo { border-radius: 14px; }
+  .work .gal .a { grid-row: span 2; }
+  .work .bottom { position: absolute; top: 752px; left: var(--m); right: var(--m); bottom: 70px; display: grid; grid-template-columns: minmax(0,1fr) 150px 150px; gap: 10px; }
+  .work .bottom .card { padding: 16px 18px; display: flex; flex-direction: column; }
+  .svc { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; margin-top: 10px; border-top: 1px solid var(--hair); }
+  .svc div { font-size: 11px; color: var(--fog); padding: 7px 0; border-bottom: 1px solid var(--hair); display: flex; justify-content: space-between; }
+  .svc div span:last-child { color: var(--steel); font-size: 9px; letter-spacing: 0.1em; }
+  .qr { background: #fff; border-radius: 10px; padding: 9px; width: 100%; aspect-ratio: 1; margin: 12px 0 10px; }
+  .qr img { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body data-format="a4-hoch">
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></symbol>
+</svg>
+<main id="app"></main>
+
+<script>
+/* ============================================================
+   BEWERBUNG – Vorlage im KMF-MEDIA-Markenstil
+   Anpassung pro Agentur über URL-Parameter, z. B.:
+   bewerbung.html?agentur=Pixelwerk%20GmbH&ansprechpartner=Frau%20Lehmann
+     &strasse=Hauptstr.%201&ort=01067%20Dresden&stelle=Videograf%20(m/w/d)
+     &warum=Eure%20Kampagne%20für%20...&eintritt=sofort&form=du
+   Parameter: agentur, ansprechpartner, vorname (für du), strasse, ort,
+   stelle, warum, eintritt, datum, form (sie|du), initiativ (1)
+   ============================================================ */
+const P = window.PROFIL;
+const q = new URLSearchParams(location.search);
+const get = k => (q.get(k) || '').trim();
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const val = (k, label) => get(k) ? esc(get(k)) : `<span class="ph">${label}</span>`;
+
+const du = get('form') === 'du';
+const agentur = val('agentur', '[Agentur]');
+const ap = get('ansprechpartner');
+const stelle = get('stelle') ? esc(get('stelle')) : 'Videograf &amp; Content Creator';
+const betreff = (get('initiativ') ? 'Initiativbewerbung' : 'Bewerbung') + ' als ' + stelle;
+const datum = get('datum') ? esc(get('datum')) : new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+const warum = val('warum', du
+  ? '[Ein Satz, warum genau ihr: ein Projekt, ein Kunde oder ein Stil, der mich überzeugt hat.]'
+  : '[Ein Satz, warum genau diese Agentur: ein Projekt, ein Kunde oder ein Stil, der mich überzeugt hat.]');
+const eintritt = val('eintritt', '[ab sofort / zum TT.MM.JJJJ]');
+
+let anrede;
+if (du) {
+  const vn = get('vorname') || (ap ? ap.replace(/^(Frau|Herr)\s+/, '').split(/\s+/)[0] : '');
+  anrede = vn ? `Hallo ${esc(vn)},` : `Hallo liebes Team von ${agentur},`;
+} else if (/^Frau\s/.test(ap)) anrede = `Sehr geehrte ${esc(ap)},`;
+else if (/^Herr\s/.test(ap)) anrede = `Sehr geehrter ${esc(ap)},`;
+else anrede = ap ? `Guten Tag ${esc(ap)},` : 'Sehr geehrte Damen und Herren,';
+
+const name = `${P.vorname} ${P.nachname}`;
+const arrow = '<svg><use href="#arrow"/></svg>';
+const frame = (label, n) => `
+  <div class="chrome-top"><span class="brand">${name}</span><span>${label}</span><span class="pno"><b>${n}</b> / 04</span></div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>KMF MEDIA · ${P.web}</span></div>`;
+const list = arr => arr.length ? `<ul>${arr.map(x => `<li>${x}</li>`).join('')}</ul>` : '';
+const items = arr => arr.map(e => `
+  <div class="item"><div class="zeit">${e.zeit}</div>
+    <div><div class="t">${e.titel}</div><div class="o">${e.ort}</div>${list(e.punkte)}</div></div>`).join('');
+
+document.getElementById('app').innerHTML = `
+<!-- 01 DECKBLATT -->
+<section class="page cover">
+  <div class="hero"><img src="img/cover-kamera.jpg" alt=""></div>
+  <div class="chrome-top"><span class="brand">${name}</span><span style="color:rgba(255,255,255,0.75)">Bewerbung ${new Date().getFullYear()}</span></div>
+  <div class="copy">
+    <span class="eyebrow">Bewerbung <span class="rule"></span> ${stelle}</span>
+    <h1 class="display">${P.vorname}<br>${P.nachname}.</h1>
+    <div class="for">
+      <p class="display d-s">${P.rolle}.<br><span class="muted-d">Video · Foto · Content.</span></p>
+      <p class="lead" style="font-size:13px">Bewerbung für <span class="white">${agentur}</span>. Social-Media-Content vom Konzept bis zum fertigen Schnitt – unter meiner Marke KMF MEDIA seit 2021.</p>
+    </div>
+  </div>
+  <div class="contact">
+    <div class="kv"><span class="k">Telefon</span><span class="v">${P.telefon}</span></div>
+    <div class="kv"><span class="k">E-Mail</span><a class="v" href="mailto:${P.email}" style="font-size:11px">${P.email}</a></div>
+    <div class="kv"><span class="k">Portfolio</span><a class="v" href="https://${P.web}">${P.web}</a></div>
+    <div class="kv"><span class="k">Instagram</span><a class="v" href="https://instagram.com/${P.instagram.replace('@','')}">${P.instagram}</a></div>
+  </div>
+  <div class="chrome-bottom"><span>Filme, die bleiben.</span><span>KMF MEDIA</span></div>
+</section>
+
+<!-- 02 ANSCHREIBEN -->
+<section class="page letter">
+  ${frame('Anschreiben', '02')}
+  <div class="top">
+    <div class="to kv"><span class="k">An</span>
+      <div class="v"><b>${agentur}</b><br>${ap ? (du ? esc(ap) : 'z. Hd. ' + esc(ap)) + '<br>' : ''}${val('strasse', '[Straße Nr.]')}<br>${val('ort', '[PLZ Ort]')}</div></div>
+    <div class="from kv"><span class="k">Von</span>
+      <div class="v"><b>${name}</b><br>${P.strasse}<br>${P.ort}<br>${P.telefon}<br>${P.email}</div></div>
+  </div>
+  <div class="main">
+    <div class="date">${P.stadt}, ${datum}</div>
+    <span class="eyebrow">Betreff</span>
+    <h2 class="display">${betreff}</h2>
+    <div class="text">
+      <p class="hi">${anrede}</p>
+      <p>${P.anschreiben.einstieg(stelle, agentur)} ${warum}</p>
+      <p class="hi">Was ich mitbringe:</p>
+      <ul>${P.anschreiben.punkte.map(x => `<li><span>${x}</span></li>`).join('')}</ul>
+      <p>${P.anschreiben.haltung}</p>
+      <p>Arbeitsproben ${du ? 'findest du' : 'finden Sie'} auf <span class="hi">${P.web}</span> und auf Instagram unter <span class="hi">${P.instagram}</span>. Starten kann ich ${eintritt}. Über eine Einladung zum persönlichen Gespräch – gern auch direkt zu einem Probedreh – freue ich mich sehr.</p>
+    </div>
+    <div class="sign text">
+      <p>${du ? 'Viele Grüße' : 'Mit freundlichen Grüßen'}</p>
+      <div class="name">${name}</div>
+      <p class="small" style="margin-top:4px">${P.rolle} · KMF MEDIA</p>
+    </div>
+    <div class="att"><span class="eyebrow no-dot">Anlagen</span><span class="chip">Lebenslauf</span><span class="chip">Arbeitsproben</span></div>
+  </div>
+</section>
+
+<!-- 03 LEBENSLAUF -->
+<section class="page cv">
+  ${frame('Lebenslauf', '03')}
+  <div class="grid2">
+    <aside class="side">
+      <div class="photo"><img src="img/lebenslauf-foto.jpg" alt="" style="object-position:50% 22%" onerror="this.src='img/portrait-martin.jpg'"></div>
+      <div class="sec"><span class="eyebrow">Kontakt</span>
+        <div class="line">${P.strasse}<br>${P.ort}<br><b>${P.telefon}</b><br>${P.email}<br>${P.web} · ${P.instagram}</div></div>
+      <div class="sec"><span class="eyebrow">Sprachen</span>
+        <div class="line">${P.sprachen.map(s => `<b>${s.name}</b> · ${s.stufe}`).join('<br>')}</div></div>
+      <div class="sec"><span class="eyebrow">Software</span><div class="tags">${P.software.map(s => `<span>${s}</span>`).join('')}</div></div>
+      <div class="sec"><span class="eyebrow">Technik</span><div class="tags">${P.technik.map(s => `<span>${s}</span>`).join('')}</div></div>
+      <div class="sec"><span class="eyebrow">Formate</span><div class="tags">${P.formate.map(s => `<span>${s}</span>`).join('')}</div></div>
+    </aside>
+    <div>
+      <div class="headline">
+        <span class="eyebrow">Lebenslauf</span>
+        <h2 class="display">${P.vorname}<br><span class="muted-d">${P.nachname}.</span></h2>
+        <p class="lead">${P.profil}</p>
+      </div>
+      <div class="tl-title"><span class="eyebrow">Berufserfahrung</span><div class="hr"></div></div>
+      <div class="tl">${items(P.erfahrung)}</div>
+      <div class="tl-title"><span class="eyebrow">Ausbildung &amp; Schule</span><div class="hr"></div></div>
+      <div class="tl">${items(P.bildung)}</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ARBEITSPROBEN -->
+<section class="page work">
+  ${frame('Arbeitsproben', '04')}
+  <div class="head">
+    <div><span class="eyebrow">Arbeitsproben &amp; Einblicke</span>
+      <h2 class="display">Filme,<br><span class="ice">die bleiben.</span></h2></div>
+    <p class="lead" style="font-size:12.5px">Ein Auszug aus Drehs der letzten Jahre. Mehr Projekte – als Video – auf ${P.web} und ${P.instagram}.</p>
+  </div>
+  <div class="gal">
+    <div class="photo a"><img src="img/automotive-audi.jpg" alt="" style="object-position:45% 60%"><div class="shade"></div><div class="label"><div><span class="tag">Carporns</span><div class="display d-xs" style="margin-top:5px;font-size:13px">Automotive</div></div><span class="num">01</span></div></div>
+    <div class="photo"><img src="img/event-flammen.jpg" alt="" style="object-position:50% 45%"><div class="shade"></div><div class="label"><div><span class="tag">Event</span><div class="display d-xs" style="margin-top:5px;font-size:13px">Live &amp; Aftermovie</div></div><span class="num">02</span></div></div>
+    <div class="photo"><img src="img/business-sw.jpg" alt="" style="object-position:62% 40%"><div class="shade"></div><div class="label"><div><span class="tag">Commercial</span><div class="display d-xs" style="margin-top:5px;font-size:13px">Business</div></div><span class="num">03</span></div></div>
+    <div class="photo"><img src="img/gimbal-low.jpg" alt="" style="object-position:50% 20%"><div class="shade"></div><div class="label"><div><span class="tag">Social Media</span><div class="display d-xs" style="margin-top:5px;font-size:13px">On Set</div></div><span class="num">04</span></div></div>
+    <div class="photo"><img src="img/automotive-fiat.jpg" alt="" style="object-position:50% 70%"><div class="shade"></div><div class="label"><div><span class="tag">Carporns</span><div class="display d-xs" style="margin-top:5px;font-size:13px">Street</div></div><span class="num">05</span></div></div>
+  </div>
+  <div class="bottom">
+    <div class="card"><span class="eyebrow">Was ich produziere</span>
+      <div class="svc">
+        <div><span>Reels &amp; Social Media</span><span>01</span></div><div><span>Imagefilme</span><span>02</span></div>
+        <div><span>Events &amp; Aftermovies</span><span>03</span></div><div><span>Automotive</span><span>04</span></div>
+        <div><span>Fotografie</span><span>05</span></div><div><span>Drohnenaufnahmen</span><span>06</span></div>
+      </div>
+      <a class="pill primary" href="https://${P.web}" style="margin-top:auto;align-self:flex-start;height:32px;font-size:10px">Portfolio ansehen ${arrow}</a>
+    </div>
+    <a class="card" href="https://${P.web}"><span class="eyebrow">Website</span><div class="qr"><img src="img/qr-website.svg" alt=""></div><span class="small">${P.web}</span></a>
+    <a class="card" href="https://instagram.com/${P.instagram.replace('@','')}"><span class="eyebrow">Instagram</span><div class="qr"><img src="img/qr-instagram.svg" alt=""></div><span class="small">${P.instagram}</span></a>
+  </div>
+</section>`;
+</script>
+</body>
+</html>
